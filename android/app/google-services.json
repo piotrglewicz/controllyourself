@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "156438581749",
+    "project_id": "task-deaea",
+    "storage_bucket": "task-deaea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156438581749:android:ddb5c3a2b35a4051bbd0bc",
+        "android_client_info": {
+          "package_name": "com.piotrglewicz.controllyourself"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156438581749-eneqk9hu5tbds700g9qt7aqd1r2m4fkp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9D2_FXzQC1j0RyNTUNlAu3Bey4yNSsm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156438581749-eneqk9hu5tbds700g9qt7aqd1r2m4fkp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
