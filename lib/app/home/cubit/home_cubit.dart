@@ -1,16 +1,20 @@
 import 'dart:async';
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:controllyourself/app/itemModel/item_model.dart';
+import 'package:controllyourself/repositories/item_repository.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit()
+  HomeCubit(this._itemRepository)
       : super(HomeState(
           documents: [],
           errorMsg: '',
           isLoading: false,
         ));
+
+  final ItemRepository _itemRepository;
 
   StreamSubscription? _streamSubscription;
 
@@ -23,13 +27,10 @@ class HomeCubit extends Cubit<HomeState> {
       ),
     );
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('tasks')
-        .snapshots()
-        .listen((data) {
+    _streamSubscription = _itemRepository.getItemStrem().listen((data) {
       emit(
         HomeState(
-          documents: data.docs,
+          documents: data,
           isLoading: false,
           errorMsg: '',
         ),
@@ -44,6 +45,10 @@ class HomeCubit extends Cubit<HomeState> {
           ),
         );
       });
+  }
+
+  Future<void> remove({required String documentID}) async {
+    await _itemRepository.delete(id: documentID);
   }
 
   @override

@@ -1,7 +1,7 @@
 part of 'home_cubit.dart';
 
 class HomeState {
-  final List<QueryDocumentSnapshot<Map<String, dynamic>>> documents;
+  final List<ItemModel> documents;
 
   final bool isLoading;
   final String errorMsg;

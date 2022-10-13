@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:controllyourself/app/add/cubit/add_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +23,13 @@ class _AddPageState extends State<AddPage> {
         listener: (context, state) {
           if (state.save) {
             Navigator.of(context).pop();
+          }
+          if (state.erorrMsg.isNotEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.erorrMsg),
+              ),
+            );
           }
         },
         child: BlocBuilder<AddCubit, AddState>(
