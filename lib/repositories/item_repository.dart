@@ -11,6 +11,7 @@ class ItemRepository {
         return ItemModel(
           id: document.id,
           name: document['name'],
+          opis: document['opis'],
         );
       }).toList();
     });
@@ -27,6 +28,7 @@ class ItemRepository {
     return ItemModel(
       id: document.id,
       name: document['name'],
+      opis: document['opis'],
     );
   }
 }

@@ -12,10 +12,10 @@ class HomePage extends StatefulWidget {
   });
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,87 +35,91 @@ class _HomePageState extends State<HomePage> {
         },
         child: const Icon(Icons.add),
       ),
-      body: Builder(builder: (context) {
-        return BlocProvider(
-          create: (context) => HomeCubit(ItemRepository())..start(),
-          child: BlocBuilder<HomeCubit, HomeState>(
-            builder: (context, state) {
-              if (state.errorMsg.isNotEmpty) {
-                return Center(
-                  child: Text(
-                    'Nieoczekiwany błąd: ${state.errorMsg}',
-                  ),
-                );
-              }
-              if (state.isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              final documents = state.documents;
-
-              return ListView(children: [
-                for (final document in documents) ...[
-                  Dismissible(
-                    background: const DecoratedBox(
-                      decoration: BoxDecoration(color: Colors.red),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.all(100),
-                          child: Icon(Icons.delete),
-                        ),
-                      ),
-                    ),
-                    key: ValueKey(document),
-                    onDismissed: (direction) {
-                      context.read<HomeCubit>().remove(documentID: document.id);
-                    },
-                    child: TaskWidget(document.name),
-                  ),
-                ]
-              ]);
-            },
-          ),
-        );
-      }),
+      body: const _HomePageBody(),
     );
   }
 }
 
-class TaskWidget extends StatefulWidget {
-  const TaskWidget(
-    this.name, {
+class _HomePageBody extends StatelessWidget {
+  const _HomePageBody({
     super.key,
   });
 
-  final String name;
-
   @override
-  State<TaskWidget> createState() => _TaskWidgetState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => HomeCubit(ItemRepository())..start(),
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          if (state.errorMsg.isNotEmpty) {
+            return const Center(
+              child: Text('Coś poszło nie tak'),
+            );
+          }
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final documents = state.documents;
+          return ListView(
+            children: [
+              for (final document in documents) ...[
+                Dismissible(
+                  background: const DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.red),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.all(100),
+                        child: Icon(Icons.delete),
+                      ),
+                    ),
+                  ),
+                  key: ValueKey(document),
+                  onDismissed: (direction) {
+                    context.read<HomeCubit>().remove(documentID: document.id);
+                  },
+                  child: _ListViewItem(
+                    itemModel: document,
+                  ),
+                )
+              ],
+            ],
+          );
+        },
+      ),
+    );
+  }
 }
 
-class _TaskWidgetState extends State<TaskWidget> {
+class _ListViewItem extends StatelessWidget {
+  const _ListViewItem({
+    required this.itemModel,
+    super.key,
+  });
+
+  final ItemModel itemModel;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => DetailsPage(),
+            builder: (context) => DetailsPage(
+              id: itemModel.id,
+            ),
           ),
         );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(
+          vertical: 20,
           horizontal: 10,
-          vertical: 30,
         ),
         child: Center(
           child: Container(
             width: 329,
             height: 188,
-            alignment: Alignment.center,
             decoration: const BoxDecoration(
               color: Color(0xFF4B7890),
               borderRadius: BorderRadius.all(
@@ -125,47 +129,51 @@ class _TaskWidgetState extends State<TaskWidget> {
             child: Column(
               children: [
                 Container(
-                  width: 308,
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  width: 309,
                   height: 100,
-                  margin: const EdgeInsets.fromLTRB(10, 15, 10, 0),
                   decoration: const BoxDecoration(
                     color: Color(0xFF8B1313),
                     borderRadius: BorderRadius.all(
                       Radius.circular(5),
                     ),
                   ),
-                  child: const Center(child: Text('Ile ty masz lat?')),
+                  child: Center(
+                    child: Text(itemModel.name),
+                  ),
                 ),
                 Row(
                   children: [
                     Container(
+                      margin: const EdgeInsets.fromLTRB(10, 14, 0, 13),
                       width: 226,
                       height: 46,
-                      margin: const EdgeInsets.fromLTRB(10, 14, 0, 13),
                       decoration: const BoxDecoration(
                         color: Color(0xFF9CCA68),
                         borderRadius: BorderRadius.all(
                           Radius.circular(5),
                         ),
                       ),
-                      child: Center(
-                        child: Text(widget.name),
+                      child: const Center(
+                        child: Text('Test'),
                       ),
                     ),
                     Container(
+                      margin: const EdgeInsets.fromLTRB(14, 3, 17, 8),
                       width: 62,
                       height: 62,
-                      margin: const EdgeInsets.fromLTRB(14, 3, 17, 8),
                       decoration: const BoxDecoration(
                         color: Color(0xFF9CCA68),
                         borderRadius: BorderRadius.all(
                           Radius.circular(30),
                         ),
                       ),
-                      child: const Center(child: Text('17')),
-                    )
+                      child: Center(
+                        child: Text('18'),
+                      ),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
