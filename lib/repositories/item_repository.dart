@@ -12,9 +12,24 @@ class ItemRepository {
           id: document.id,
           name: document['name'],
           opis: document['opis'],
+          releaseDate: (document['date'] as Timestamp).toDate(),
         );
       }).toList();
     });
+  }
+
+  Future<void> add(
+    String name,
+    String opis,
+    DateTime releaseDate,
+  ) async {
+    await FirebaseFirestore.instance.collection('tasks').add(
+      {
+        'name': name,
+        'opis': opis,
+        'date': releaseDate,
+      },
+    );
   }
 
   Future<void> delete({required String id}) {
@@ -29,6 +44,7 @@ class ItemRepository {
       id: document.id,
       name: document['name'],
       opis: document['opis'],
+      releaseDate: (document['date'] as Timestamp).toDate(),
     );
   }
 }

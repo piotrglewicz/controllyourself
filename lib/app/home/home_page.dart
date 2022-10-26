@@ -52,8 +52,8 @@ class _HomePageBody extends StatelessWidget {
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           if (state.errorMsg.isNotEmpty) {
-            return const Center(
-              child: Text('Coś poszło nie tak'),
+            return Center(
+              child: Text('Coś poszło nie tak ${state.errorMsg}'),
             );
           }
           if (state.isLoading) {
@@ -169,7 +169,7 @@ class _ListViewItem extends StatelessWidget {
                         ),
                       ),
                       child: Center(
-                        child: Text('18'),
+                        child: Text(itemModel.daysLeft()),
                       ),
                     ),
                   ],

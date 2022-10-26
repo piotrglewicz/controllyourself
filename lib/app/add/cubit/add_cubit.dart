@@ -1,23 +1,26 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:controllyourself/repositories/item_repository.dart';
 
 part 'add_state.dart';
 
 class AddCubit extends Cubit<AddState> {
-  AddCubit() : super(const AddState());
+  AddCubit(this._itemRepository) : super(const AddState());
 
-  String? name;
-  String? opis;
+  final ItemRepository _itemRepository;
 
-  Future<void> add(name, opis) async {
+  Future<void> add(
+    String name,
+    String opis,
+    DateTime releaseDate,
+  ) async {
     try {
-      FirebaseFirestore.instance.collection('tasks').add(
-        {
-          'name': name,
-          'opis': opis,
-        },
+      await _itemRepository.add(
+        name,
+        opis,
+        releaseDate,
       );
+
       emit(
         const AddState(save: true),
       );

@@ -2,7 +2,6 @@ part of 'home_cubit.dart';
 
 class HomeState {
   final List<ItemModel> documents;
-
   final bool isLoading;
   final String errorMsg;
 
