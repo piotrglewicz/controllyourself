@@ -13,12 +13,14 @@ class AddCubit extends Cubit<AddState> {
     String name,
     String opis,
     DateTime releaseDate,
+    String level,
   ) async {
     try {
       await _itemRepository.add(
         name,
         opis,
         releaseDate,
+        level,
       );
 
       emit(

@@ -24,6 +24,7 @@ class _AddPageState extends State<AddPage> {
   String? name;
   String? opis;
   DateTime? releaseDate;
+  String? level;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,7 @@ class _AddPageState extends State<AddPage> {
                                   name!,
                                   opis!,
                                   releaseDate!,
+                                  level!,
                                 );
                           },
                     icon: const Icon(Icons.check),
@@ -90,6 +92,11 @@ class _AddPageState extends State<AddPage> {
                 selectedDateFormat: releaseDate == null
                     ? null
                     : DateFormat.yMMMMEEEEd().format(releaseDate!),
+                selectedLevel: (newValue) {
+                  setState(() {
+                    level = newValue;
+                  });
+                },
               ),
             );
           },
@@ -100,17 +107,27 @@ class _AddPageState extends State<AddPage> {
 }
 
 class _AddPageBody extends StatelessWidget {
-  const _AddPageBody({
+  _AddPageBody({
     required this.onNameChange,
     required this.onOpisChange,
     required this.onDateChange,
     required this.selectedDateFormat,
+    required this.selectedLevel,
     super.key,
   });
   final Function(String) onNameChange;
   final Function(String) onOpisChange;
   final Function(DateTime?) onDateChange;
   final String? selectedDateFormat;
+  var selectedLevel;
+
+  String dropDownValue = 'Łatwy';
+
+  var items = [
+    'Łatwy',
+    'Średni',
+    'Trudny',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +227,17 @@ class _AddPageBody extends StatelessWidget {
                         Radius.circular(5),
                       ),
                     ),
-                    child: Center(child: Text('poziom')),
+                    child: Center(
+                        child: DropdownButton(
+                            value: dropDownValue,
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: selectedLevel)),
                   ),
                 ],
               )),

@@ -12,6 +12,7 @@ class ItemRepository {
           id: document.id,
           name: document['name'],
           opis: document['opis'],
+          level: document['level'],
           releaseDate: (document['date'] as Timestamp).toDate(),
         );
       }).toList();
@@ -22,11 +23,13 @@ class ItemRepository {
     String name,
     String opis,
     DateTime releaseDate,
+    String level,
   ) async {
     await FirebaseFirestore.instance.collection('tasks').add(
       {
         'name': name,
         'opis': opis,
+        'level': level,
         'date': releaseDate,
       },
     );
@@ -44,6 +47,7 @@ class ItemRepository {
       id: document.id,
       name: document['name'],
       opis: document['opis'],
+      level: document['level'],
       releaseDate: (document['date'] as Timestamp).toDate(),
     );
   }
